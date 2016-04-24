@@ -7,15 +7,14 @@ class Player
   def bet_request(game_state)
     player_cards = game_state["players"][game_state["in_action"]]["hole_cards"]
     community_cards = game_state["community_cards"]
-    p check_combination(player_cards, community_cards)
 
-    if game_state["community_cards"].length >= 3
-      if check_combination(player_cards, community_cards) == :pair
-        return call(game_state)
-      end
-    else
-      hand = check_combination(player_cards, community_cards)
-      if hand == :high_hand || hand == :pair
+    combination = check_combination(player_cards, community_cards)
+    p combination
+
+    if combination
+      if combination == :pair
+        return raise_bet(game_state, 100)
+      else
         return call(game_state)
       end
     end
@@ -28,6 +27,10 @@ class Player
 
   def call(game_state)
     game_state["current_buy_in"] - game_state["players"][game_state["in_action"]]["bet"]
+  end
+
+  def raise_bet(game_state, bet)
+    call(game_state) + bet
   end
 
   def check_combination(player_cards, community_cards = [])

@@ -16,7 +16,7 @@ action=bet_request&game_state={
       "bet":0,
       "hole_cards":[
         {
-          "rank": "7",
+          "rank": "6",
           "suit": "hearts"
         },
         {
