@@ -20,7 +20,7 @@ action=bet_request&game_state={
           "suit": "hearts"
         },
         {
-          "rank": "8",
+          "rank": "Q",
           "suit": "spades"
         }
       ],
@@ -50,7 +50,7 @@ action=bet_request&game_state={
       "suit": "hearts"
     },
     {
-      "rank": "4",
+      "rank": "8",
       "suit": "clubs"
     },
     {

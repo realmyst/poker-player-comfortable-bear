@@ -28,7 +28,7 @@ class Player
     when :three_of_kind
       return raise_bet(game_state, 300)
     when :two_pair
-      return raise_bet(game_state, 250)
+      return raised?(game_state) ? call(game_state) : raise_bet(game_state, 250)
     when :pair
       if pair_on_table?(community_cards)
         return 0
@@ -37,9 +37,9 @@ class Player
       better_pairs = possible_better_pairs(player_cards, community_cards)
       case better_pairs
         when 0
-          return raise_bet(game_state, 150)
+          return raised?(game_state) ? call(game_state) : raise_bet(game_state, 150)
         when 1
-          return raise_bet(game_state, 100)
+          return raised?(game_state) ? call(game_state) : raise_bet(game_state, 100)
         else
           cards = player_cards + community_cards
           if good_pair?(cards)
@@ -127,6 +127,10 @@ class Player
 
   def call(game_state)
     game_state["current_buy_in"] - game_state["players"][game_state["in_action"]]["bet"]
+  end
+
+  def raised?(game_state)
+    return call(game_state) > 0
   end
 
   def raise_bet(game_state, bet)
