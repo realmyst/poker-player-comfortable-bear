@@ -37,9 +37,17 @@ class Player
       better_pairs = possible_better_pairs(player_cards, community_cards)
       case better_pairs
         when 0
-          return raised?(game_state) ? call(game_state) : raise_bet(game_state, 150)
+          if stop_loss?(game_state, 500)
+            return 0
+          else
+            return raised?(game_state) ? call(game_state) : raise_bet(game_state, 150)
+          end
         when 1
-          return raised?(game_state) ? call(game_state) : raise_bet(game_state, 100)
+          if stop_loss?(game_state, 500)
+            return 0
+          else
+            return raised?(game_state) ? call(game_state) : raise_bet(game_state, 100)
+          end
         else
           cards = player_cards + community_cards
           if good_pair?(cards)
