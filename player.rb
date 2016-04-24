@@ -12,10 +12,6 @@ class Player
     combination = check_combination(player_cards, community_cards)
     p combination
 
-    if almost_flush?(player_cards, community_cards)
-      return call(game_state)
-    end
-
     if combination
       case combination
       when :royal_flush
@@ -30,6 +26,10 @@ class Player
       when :pair
         return raise_bet(game_state, 100)
       else
+        if almost_flush?(player_cards, community_cards)
+          return call(game_state)
+        end
+
         if community_cards.length < 3
           return call(game_state)
         end
@@ -81,7 +81,9 @@ class Player
   def make_hand(player_cards, community_cards)
     all_cards = player_cards + community_cards
     cards_for_hand = all_cards.map do |card|
-      "#{card['rank']}#{card['suit'][0]}"
+      rank = card['rank']
+      rank = "T" if rank == "10"
+      "#{rank}#{card['suit'][0]}"
     end
     PokerHand.new cards_for_hand
   end
