@@ -31,14 +31,18 @@ class Player
       when :two_pair
         return raise_bet(game_state, 150)
       when :pair
-        return raise_bet(game_state, 50)
-      else
-        if almost_flush?(player_cards, community_cards)
+        if stop_loss?(game_state, 300)
+          return 0
+        else
           return call(game_state)
         end
-
-        if community_cards.length < 3
-          return call(game_state)
+      else
+        if stop_loss?(game_state, 100)
+          return 0
+        else
+          if community_cards.length < 3
+            return call(game_state)
+          end
         end
       end
     end
@@ -47,6 +51,14 @@ class Player
   end
 
   def showdown(game_state)
+  end
+
+  def stop_loss?(game_state, stop)
+    if game_state["current_buy_in"] > stop
+      true
+    else
+      false
+    end
   end
 
   def call(game_state)
@@ -76,7 +88,7 @@ class Player
       return :three_of_kind
     when !!two_pair?(player_cards, community_cards)
       return :two_pair
-    when pair?(player_cards, community_cards)
+    when !!pair?(player_cards, community_cards)
       return :pair
     when high_hand?(player_cards, community_cards)
       return :high_hand

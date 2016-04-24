@@ -37,18 +37,6 @@ action=bet_request&game_state={
   "dealer":0,
   "community_cards": [
     {
-      "rank": "4",
-      "suit": "spades"
-    },
-    {
-      "rank": "5",
-      "suit": "spades"
-    },
-    {
-      "rank": "6",
-      "suit": "spades"
-    },
-    {
       "rank": "A",
       "suit": "hearts"
     },
@@ -57,7 +45,7 @@ action=bet_request&game_state={
       "suit": "clubs"
     }
   ],
-  "current_buy_in":0,
+  "current_buy_in":500,
   "in_action": 1,
   "pot":0
 }
