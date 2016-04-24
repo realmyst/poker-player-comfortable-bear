@@ -12,9 +12,33 @@ class Player
   end
 
   def check_combination(player_cards, community_cards = [])
+    # писать по убыванию старшинства
+    case true
+    when royal_flush?(player_cards, community_cards)
+      return :royal_flush
+    when straight_flush?(player_cards, community_cards)
+      return :straight_flush
+    when four_of_a_kind?(player_cards, community_cards)
+      return :four_of_a_kind
+    when full_house?(player_cards, community_cards)
+      return :full_house
+    when flush?(player_cards, community_cards)
+      return :flush
+    when straight?(player_cards, community_cards)
+      return :straight
+    when three_of_kind?(player_cards, community_cards)
+      return :three_of_kind
+    when two_pair?(player_cards, community_cards)
+      return :two_pair
+    when pair?(player_cards, community_cards)
+      return :pair
+    #else
+      # сомнительная хрень
+      #high_hand(player_cards, community_cards)
+    end
   end
 
-  def have_pair?(player_cards, community_cards = [])
+  def pair?(player_cards, community_cards)
     card1 = player_cards[0]
     card2 = player_cards[1]
     community_ranks = community_cards.map {|c| c["rank"] }
@@ -25,4 +49,47 @@ class Player
 
     false
   end
+
+  def two_pair?(player_cards, community_cards)
+
+    false
+  end
+
+  def three_of_kind?(player_cards, community_cards)
+
+    false
+  end
+
+  def straight?(player_cards, community_cards)
+
+    false
+  end
+
+  def flush?(player_cards, community_cards)
+
+    false
+  end
+
+  def full_house?(player_cards, community_cards)
+
+    false
+  end
+
+  def four_of_a_kind?(player_cards, community_cards)
+
+    false
+  end
+
+  def straight_flush?(player_cards, community_cards)
+
+    false
+  end
+
+  def royal_flush?(player_cards, community_cards)
+
+    false
+  end
+
+  #def high_hand(player_cards, community_cards)
+  #end
 end
