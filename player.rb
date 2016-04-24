@@ -11,6 +11,10 @@ class Player
     combination = check_combination(player_cards, community_cards)
     p combination
 
+    if almost_flush?(player_cards, community_cards)
+      return call(game_state)
+    end
+
     if combination
       if combination == :pair
         return raise_bet(game_state, 100)
@@ -89,6 +93,24 @@ class Player
   end
 
   def flush?(player_cards, community_cards)
+
+    false
+  end
+
+  def almost_flush?(player_cards, community_cards)
+    all_cards = player_cards + community_cards
+    one_suit_count = {}
+
+    all_cards.each do |card|
+      one_suit_count[card["suit"]] ||= 0
+      one_suit_count[card["suit"]] += 1
+    end
+
+    one_suit_count.each do |suit, count|
+      if count >= 4
+        return true
+      end
+    end
 
     false
   end

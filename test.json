@@ -41,6 +41,14 @@ action=bet_request&game_state={
       "suit": "spades"
     },
     {
+      "rank": "5",
+      "suit": "spades"
+    },
+    {
+      "rank": "6",
+      "suit": "spades"
+    },
+    {
       "rank": "A",
       "suit": "hearts"
     },
