@@ -5,10 +5,24 @@ class Player
   VERSION = "Default Ruby folding player"
 
   def bet_request(game_state)
-    game_state["current_buy_in"] - game_state["players"][game_state["in_action"]]["bet"] + 1
+    player_cards = game_state["players"][game_state["in_action"]]["hole_cards"]
+    community_cards = game_state["community_cards"]
+    p check_combination(player_cards, community_cards)
+
+    if game_state["round"] > 1
+      if check_combination(player_cards, community_cards)
+        call(game_state)
+      end
+    else
+      call(game_state)
+    end
   end
 
   def showdown(game_state)
+  end
+
+  def call(game_state)
+    game_state["current_buy_in"] - game_state["players"][game_state["in_action"]]["bet"]
   end
 
   def check_combination(player_cards, community_cards = [])
@@ -32,6 +46,8 @@ class Player
       return :two_pair
     when pair?(player_cards, community_cards)
       return :pair
+    else
+      nil
     #else
       # сомнительная хрень
       #high_hand(player_cards, community_cards)
