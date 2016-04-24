@@ -16,7 +16,7 @@ action=bet_request&game_state={
       "bet":0,
       "hole_cards":[
         {
-          "rank": "5",
+          "rank": "3",
           "suit": "hearts"
         },
         {
@@ -37,11 +37,11 @@ action=bet_request&game_state={
   "dealer":0,
   "community_cards": [
     {
-      "rank": "A",
+      "rank": "K",
       "suit": "hearts"
     },
     {
-      "rank": "6",
+      "rank": "5",
       "suit": "clubs"
     },
     {

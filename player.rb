@@ -30,15 +30,27 @@ class Player
     when :two_pair
       return raise_bet(game_state, 150)
     when :pair
-      cards = player_cards + community_cards
-      if good_pair?(cards)
-        return raise_bet(game_state, 150)
-      else
-        if stop_loss?(game_state, 50)
-          return 0
+      better_pairs = possible_better_pairs(player_cards, community_cards)
+      case better_pairs
+        when 0
+          return raise_bet(game_state, 150)
+        when 1
+          return raise_bet(game_state, 100)
         else
-          return call(game_state)
-        end
+          cards = player_cards + community_cards
+          if good_pair?(cards)
+            if stop_loss?(game_state, 100)
+              return 0
+            else
+              return call(game_state)
+            end
+          else
+            if stop_loss?(game_state, 50)
+              return 0
+            else
+              return call(game_state)
+            end
+          end
       end
     when :high_hand
       if community_cards.length < 3
@@ -56,15 +68,33 @@ class Player
   def showdown(game_state)
   end
 
-  def good_pair?(cards)
-    our_pair = ""
+  def possible_better_pairs(player_cards, community_cards)
+    my_pair_rank = get_pair(player_cards + community_cards)
 
+    all_cards = player_cards + community_cards
+
+    better_cards = all_cards.select do |card|
+      rank_force(card["rank"]) > rank_force(my_pair_rank)
+    end
+
+    better_cards.length
+  end
+
+  def rank_force(rank)
+    ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"].find_index(rank)
+  end
+
+  def good_pair?(cards)
+    card = get_pair(cards)
+    ["A", "K", "Q", "J", "10"].include?(card)
+  end
+
+  def get_pair(cards)
     ranks = cards.map do |card|
       card["rank"]
     end
     hash = ranks.inject(Hash.new(0)) { |h, e| h[e] += 1 ; h  }.select{|k,v| v == 2}
     card = hash.keys[0]
-    ["A", "K", "Q", "J", "10"].include?(card)
   end
 
   def stop_loss?(game_state, stop)
