@@ -98,7 +98,14 @@ class Player
   end
 
   def stop_loss?(game_state, stop)
-    if game_state["current_buy_in"] > stop
+    relative_stop = stop
+    active_players = game_state["players"].select{ |player| player["status"] == "active" }
+
+    if active_players.length == 2
+      relative_stop = stop * 2
+    end
+
+    if game_state["current_buy_in"] > relative_stop
       true
     else
       false
