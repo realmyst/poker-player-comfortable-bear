@@ -1,4 +1,5 @@
 require 'pry'
+require 'ruby-poker'
 
 class Player
 
@@ -16,10 +17,22 @@ class Player
     end
 
     if combination
-      if combination == :pair
+      case combination
+      when :royal_flush
+      when :straight_flush
+      when :four_of_a_kind
+      when :full_house
+      when :flush
+      when :straight
+      when :three_of_kind
+      when :two_pair
+        return raise_bet(game_state, 100)
+      when :pair
         return raise_bet(game_state, 100)
       else
-        return call(game_state)
+        if community_cards.length < 3
+          return call(game_state)
+        end
       end
     end
 
@@ -40,21 +53,21 @@ class Player
   def check_combination(player_cards, community_cards = [])
     # писать по убыванию старшинства
     case true
-    when royal_flush?(player_cards, community_cards)
+    when !!royal_flush?(player_cards, community_cards)
       return :royal_flush
-    when straight_flush?(player_cards, community_cards)
+    when !!straight_flush?(player_cards, community_cards)
       return :straight_flush
-    when four_of_a_kind?(player_cards, community_cards)
+    when !!four_of_a_kind?(player_cards, community_cards)
       return :four_of_a_kind
-    when full_house?(player_cards, community_cards)
+    when !!full_house?(player_cards, community_cards)
       return :full_house
-    when flush?(player_cards, community_cards)
+    when !!flush?(player_cards, community_cards)
       return :flush
-    when straight?(player_cards, community_cards)
+    when !!straight?(player_cards, community_cards)
       return :straight
-    when three_of_kind?(player_cards, community_cards)
+    when !!three_of_kind?(player_cards, community_cards)
       return :three_of_kind
-    when two_pair?(player_cards, community_cards)
+    when !!two_pair?(player_cards, community_cards)
       return :two_pair
     when pair?(player_cards, community_cards)
       return :pair
@@ -65,36 +78,37 @@ class Player
     end
   end
 
+  def make_hand(player_cards, community_cards)
+    all_cards = player_cards + community_cards
+    cards_for_hand = all_cards.map do |card|
+      "#{card['rank']}#{card['suit'][0]}"
+    end
+    PokerHand.new cards_for_hand
+  end
+
   def pair?(player_cards, community_cards)
-    card1 = player_cards[0]
-    card2 = player_cards[1]
-    community_ranks = community_cards.map {|c| c["rank"] }
-
-    return true if card1["rank"] == card2["rank"]
-    return true if community_ranks.include? card1["rank"]
-    return true if community_ranks.include? card2["rank"]
-
-    false
+    hand = make_hand(player_cards, community_cards)
+    return hand.pair?
   end
 
   def two_pair?(player_cards, community_cards)
-
-    false
+    hand = make_hand(player_cards, community_cards)
+    return hand.two_pair?
   end
 
   def three_of_kind?(player_cards, community_cards)
-
-    false
+    hand = make_hand(player_cards, community_cards)
+    return hand.three_of_a_kind?
   end
 
   def straight?(player_cards, community_cards)
-
-    false
+    hand = make_hand(player_cards, community_cards)
+    return hand.straight?
   end
 
   def flush?(player_cards, community_cards)
-
-    false
+    hand = make_hand(player_cards, community_cards)
+    return hand.flush?
   end
 
   def almost_flush?(player_cards, community_cards)
@@ -116,23 +130,23 @@ class Player
   end
 
   def full_house?(player_cards, community_cards)
-
-    false
+    hand = make_hand(player_cards, community_cards)
+    return hand.full_house?
   end
 
   def four_of_a_kind?(player_cards, community_cards)
-
-    false
+    hand = make_hand(player_cards, community_cards)
+    return hand.four_of_a_kind?
   end
 
   def straight_flush?(player_cards, community_cards)
-
-    false
+    hand = make_hand(player_cards, community_cards)
+    return hand.straight_flush?
   end
 
   def royal_flush?(player_cards, community_cards)
-
-    false
+    hand = make_hand(player_cards, community_cards)
+    return hand.royal_flush?
   end
 
   def high_hand?(player_cards, community_cards)
