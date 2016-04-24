@@ -15,16 +15,23 @@ class Player
     if combination
       case combination
       when :royal_flush
+        return raise_bet(game_state, 500)
       when :straight_flush
+        return raise_bet(game_state, 500)
       when :four_of_a_kind
+        return raise_bet(game_state, 500)
       when :full_house
+        return raise_bet(game_state, 500)
       when :flush
+        return raise_bet(game_state, 300)
       when :straight
+        return raise_bet(game_state, 300)
       when :three_of_kind
+        return raise_bet(game_state, 200)
       when :two_pair
-        return raise_bet(game_state, 100)
+        return raise_bet(game_state, 150)
       when :pair
-        return raise_bet(game_state, 100)
+        return raise_bet(game_state, 50)
       else
         if almost_flush?(player_cards, community_cards)
           return call(game_state)
