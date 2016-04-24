@@ -22,13 +22,13 @@ class Player
     when :full_house
       return raise_bet(game_state, 500)
     when :flush
-      return raise_bet(game_state, 300)
+      return raise_bet(game_state, 400)
     when :straight
-      return raise_bet(game_state, 300)
+      return raise_bet(game_state, 400)
     when :three_of_kind
-      return raise_bet(game_state, 200)
+      return raise_bet(game_state, 300)
     when :two_pair
-      return raise_bet(game_state, 150)
+      return raise_bet(game_state, 250)
     when :pair
       better_pairs = possible_better_pairs(player_cards, community_cards)
       case better_pairs
