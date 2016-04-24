@@ -111,7 +111,7 @@ class Player
 
 	def high_hand?(player_cards, community_cards)
 		player_cards.each do |card|
-      if card.rank == 'A' || card.rank == 'K' || card.rank == 'Q'
+      if card["rank"] == 'A' || card["rank"] == 'K' || card["rank"] == 'Q'
         return true
       end
     end
