@@ -31,10 +31,15 @@ class Player
       when :two_pair
         return raise_bet(game_state, 150)
       when :pair
-        if stop_loss?(game_state, 300)
-          return 0
+        cards = player_cards + community_cards
+        if good_pair?(cards)
+          return raise_bet(game_state, 50)
         else
-          return call(game_state)
+          if stop_loss?(game_state, 150)
+            return 0
+          else
+            return call(game_state)
+          end
         end
       else
         if stop_loss?(game_state, 100)
@@ -51,6 +56,17 @@ class Player
   end
 
   def showdown(game_state)
+  end
+
+  def good_pair?(cards)
+    our_pair = ""
+
+    ranks = cards.map do |card|
+      card["rank"]
+    end
+    hash = ranks.inject(Hash.new(0)) { |h, e| h[e] += 1 ; h  }.select{|k,v| v == 2}
+    card = hash.keys[0]
+    ["A", "K", "Q", "J", "10"].include?(card)
   end
 
   def stop_loss?(game_state, stop)
