@@ -30,6 +30,10 @@ class Player
     when :two_pair
       return raise_bet(game_state, 250)
     when :pair
+      if pair_on_table?(community_cards)
+        return 0
+      end
+
       better_pairs = possible_better_pairs(player_cards, community_cards)
       case better_pairs
         when 0
@@ -66,6 +70,15 @@ class Player
   end
 
   def showdown(game_state)
+  end
+
+  def pair_on_table?(community_cards)
+    ranks = community_cards.map do |card|
+      card["rank"]
+    end
+
+    hash = ranks.inject(Hash.new(0)) { |h, e| h[e] += 1 ; h  }.select{|k,v| v == 2}
+    hash.any?
   end
 
   def possible_better_pairs(player_cards, community_cards)
