@@ -12,42 +12,40 @@ class Player
     combination = check_combination(player_cards, community_cards)
     p combination
 
-    if combination
-      case combination
-      when :royal_flush
-        return raise_bet(game_state, 500)
-      when :straight_flush
-        return raise_bet(game_state, 500)
-      when :four_of_a_kind
-        return raise_bet(game_state, 500)
-      when :full_house
-        return raise_bet(game_state, 500)
-      when :flush
-        return raise_bet(game_state, 300)
-      when :straight
-        return raise_bet(game_state, 300)
-      when :three_of_kind
-        return raise_bet(game_state, 200)
-      when :two_pair
+    case combination
+    when :royal_flush
+      return raise_bet(game_state, 500)
+    when :straight_flush
+      return raise_bet(game_state, 500)
+    when :four_of_a_kind
+      return raise_bet(game_state, 500)
+    when :full_house
+      return raise_bet(game_state, 500)
+    when :flush
+      return raise_bet(game_state, 300)
+    when :straight
+      return raise_bet(game_state, 300)
+    when :three_of_kind
+      return raise_bet(game_state, 200)
+    when :two_pair
+      return raise_bet(game_state, 150)
+    when :pair
+      cards = player_cards + community_cards
+      if good_pair?(cards)
         return raise_bet(game_state, 150)
-      when :pair
-        cards = player_cards + community_cards
-        if good_pair?(cards)
-          return raise_bet(game_state, 50)
-        else
-          if stop_loss?(game_state, 150)
-            return 0
-          else
-            return call(game_state)
-          end
-        end
       else
+        if stop_loss?(game_state, 50)
+          return 0
+        else
+          return call(game_state)
+        end
+      end
+    when :high_hand
+      if community_cards.length < 3
         if stop_loss?(game_state, 100)
           return 0
         else
-          if community_cards.length < 3
-            return call(game_state)
-          end
+          return call(game_state)
         end
       end
     end

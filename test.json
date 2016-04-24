@@ -45,7 +45,7 @@ action=bet_request&game_state={
       "suit": "clubs"
     },
     {
-      "rank": "K",
+      "rank": "Q",
       "suit": "clubs"
     }
   ],
