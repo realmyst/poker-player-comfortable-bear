@@ -9,13 +9,17 @@ class Player
     community_cards = game_state["community_cards"]
     p check_combination(player_cards, community_cards)
 
-    if game_state["round"] > 1
-      if check_combination(player_cards, community_cards)
-        call(game_state)
+    if game_state["community_cards"].length >= 3
+      if check_combination(player_cards, community_cards) == :pair
+        return call(game_state)
       end
     else
-      call(game_state)
+      if check_combination(player_cards, community_cards) == :high_hand
+        return call(game_state)
+      end
     end
+
+    0
   end
 
   def showdown(game_state)
@@ -46,11 +50,10 @@ class Player
       return :two_pair
     when pair?(player_cards, community_cards)
       return :pair
+    when high_hand?(player_cards, community_cards)
+      return :high_hand
     else
       nil
-    #else
-      # сомнительная хрень
-      #high_hand(player_cards, community_cards)
     end
   end
 
@@ -106,6 +109,13 @@ class Player
     false
   end
 
-  #def high_hand(player_cards, community_cards)
-  #end
+	def high_hand(player_cards, community_cards)
+		player_cards.each do |card|
+      if card.rank == 'A' || card.rank == 'K' || card.rank == 'Q'
+        return true
+      end
+    end
+
+    false
+	end
 end
