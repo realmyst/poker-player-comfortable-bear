@@ -14,7 +14,8 @@ class Player
         return call(game_state)
       end
     else
-      if check_combination(player_cards, community_cards) == :high_hand
+      hand = check_combination(player_cards, community_cards)
+      if hand == :high_hand || hand == :pair
         return call(game_state)
       end
     end
